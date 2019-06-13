@@ -1,0 +1,68 @@
+
+import java.util.Scanner;
+
+public class ZuiXiaoZhongLiangJiQiSheJi {
+
+    private static int n,m,d;
+    private static int[][] c,w;
+    private static int cw,cp,bestw;
+    private static int[] x,bestx;
+    private static int MAX = 1000000;
+
+
+    public static void main(String[] args){
+        Scanner input = new Scanner(System.in);
+
+        while (true){
+            cw = 0;
+            cp = 0;
+            bestw = MAX;
+
+            n = input.nextInt();
+            m = input.nextInt();
+            d = input.nextInt();
+
+            c = new int[n+1][m+1];
+            w = new int[n+1][m+1];
+            x = new int[n+1];
+            bestx = new int[n+1];
+
+            for(int i=1; i<=n; i++)
+                for(int j=1; j<=m; j++)
+                    c[i][j] = input.nextInt();
+
+            for(int i=1; i<=n; i++)
+                for(int j=1; j<=m; j++)
+                    w[i][j] = input.nextInt();
+
+            if(backtrack(1)){
+                System.out.println(bestw);
+                for(int i=1; i<=n; i++)
+                    System.out.print(bestx[i]+" ");
+            }
+        }
+    }
+
+    private static boolean backtrack(int i){
+        if(i > n){
+            bestw = cw;
+            for(int j=1; j<=n; j++)
+                bestx[j] = x[j];
+            return true;
+        }
+        boolean found = false;
+        if(bestw <= d) found = true;
+        for(int j=1; j<=m; j++){
+            x[i] = j;
+            cw += w[i][j];
+            cp += c[i][j];
+            if(cp <= d && cw < bestw)
+                if(backtrack(i+1))
+                    found = true;
+            cw -= w[i][j];
+            cp -= c[i][j];
+        }
+
+        return found;
+    }
+}
