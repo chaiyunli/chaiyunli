@@ -1,0 +1,50 @@
+import java.util.*;
+public class TransInt {
+    static int m;
+    static int tempcount,bestcount;//当前变换次数，最佳变换次数
+    static int[] temp1=new int[100];
+    static int[] temp2=new int[100];
+    public static void main(String args[]){
+        Scanner input=new Scanner(System.in);
+        System.out.println("请输入需变换的整数");
+        int n=input.nextInt();
+        System.out.println("请输入需变换后的整数");
+        m=input.nextInt();
+        tempcount=0;
+        bestcount=100;
+        Transform(n);
+        System.out.println(bestcount);
+        for(int i=bestcount;i>=1;i--){
+            if(temp2[i]==2)System.out.print("f");
+            if(temp2[i]==1)System.out.print("g");
+        }
+    }
+ 
+    public static void Transform(int t){
+        if(t==m){//需变换的数字成功变换
+            if(tempcount<bestcount){
+                bestcount=tempcount;//将最小转换次数赋值给bestcount
+                for(int i=1;i<=bestcount;i++){
+                    temp2[i]=temp1[i];//temp2存最小次数转换方法
+                    }
+                }
+            return ;
+    }
+ 
+    int temp=t/2;
+    tempcount++;
+    if(tempcount<bestcount&& t>0){
+        temp1[tempcount]=1;//使用方法g赋值为1
+        Transform(temp);
+    }
+    tempcount--;//回溯
+         
+    temp=3*t;
+    tempcount++;
+    if(tempcount<bestcount){
+        temp1[tempcount]=2;//使用方法f赋值为2
+        Transform(temp);
+    }
+    tempcount--;//回溯
+    }
+ }
