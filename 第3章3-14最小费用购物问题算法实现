@@ -1,0 +1,101 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+typedef pair<int, int> P;
+const int MAX       = 6;
+const int INF  = 1e9;
+int          map[1000];
+int          n, m;
+int          ids[MAX];
+int          price[MAX];
+int          nums[MAX];
+vector<P>     pairs[100];
+int          pP[100];
+int          pcnt = 0;
+int          dp[MAX][MAX][MAX][MAX][MAX];
+int          times = 0;
+int dfs( int* x )
+{
+       times++;
+       int r = dp[x[0]][x[1]][x[2]][x[3]][x[4]];
+       if ( r > 0 )
+       {
+              return(r);
+       }
+       if ( x[0] == 0 && x[1] == 0 && x[2] == 0 && x[3] == 0 && x[4] == 0 )
+       {
+              return(0);
+       }
+       int minf = INF;
+       for ( int i = 0; i < pcnt; i++ )
+       {
+              vector<P> & vec  = pairs[i];
+              int          f      = 1;
+              int          *y    = new int[5];
+              for ( int t = 0; t < 5; t++ )
+                     y[t] = 0;
+              for ( auto p : vec )
+              {
+                     int   id    = map[p.first];
+                     int   num = p.second;
+                     if ( x[id] < num )
+                     {
+                            f = 0; break;
+                     }
+                     y[id] = -num;
+              }
+              if ( !f )
+                     continue;
+              for ( int k = 0; k < 5; k++ )
+                     y[k] += x[k];
+              minf = min( minf, pP[i] + dfs( y ) );
+       }
+       int s = 0;
+       for ( int i = 0; i < 5; i++ )
+       {
+              s += x[i] * price[i];
+       }
+       minf = min( minf, s );
+       return(dp[x[0]][x[1]][x[2]][x[3]][x[4]] = minf);
+}
+ 
+ 
+int main()
+{
+       cin >> n;
+       for ( int i = 0; i < n; i++ )
+       {
+              int C, K, PP;
+              cin >> C >> K >> PP;
+              ids[i]              = C;
+              nums[i]          = K;
+              price[i]    = PP;
+              if ( !map[C] )
+              {
+                     map[C] = i;
+              }
+       }
+       cin >> m;
+       for ( int i = 0; i < m; i++ )
+       {
+              int          k; cin >> k;
+              vector<P>     v;
+              int          f = 1;
+              for ( int j = 0; j < k; j++ )
+              {
+                     int a, b; cin >> a >> b;
+                     v.push_back( make_pair( a, b ) );
+              }
+              int PP;
+              cin >> PP;
+              if ( f )
+              {
+                     pairs[pcnt]     = v;
+                     pP[pcnt++]    = PP;
+              }
+       }
+       cout << "答案:" << dfs( nums ) << endl;
+       cout << "运行次数:" << times << endl;
+       return(0);
+}
