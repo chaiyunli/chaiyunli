@@ -1,0 +1,61 @@
+import java.util.*;
+
+public class HuiChangAnPai {
+
+    private static class Point implements Comparable{
+        int time;
+        boolean isStartTime;
+
+        public int compareTo(Object o) {
+            Point point=(Point) o;
+            int result = Integer.compare(time, point.time);//按 time 由小到大 排列
+            return result;
+        }
+    }
+
+    private static int n;
+    private static List<Point> acts = new ArrayList<Point>();
+
+    public static void main(String[] args){
+        Scanner input = new Scanner(System.in);
+
+        while (true){
+            acts.clear();
+            n = input.nextInt();
+
+            for(int i=1; i<2*n; i+=2){
+                Point p = new Point();
+                Point q = new Point();
+                p.time = input.nextInt();
+                q.time = input.nextInt();
+                p.isStartTime = true;
+                q.isStartTime = false;
+                acts.add(p);
+                acts.add(q);
+
+            }
+
+            Collections.sort(acts);
+            int result = greedy();
+            System.out.println(result);
+        }
+    }
+
+    private static int greedy(){
+        int curr = 0;
+        int sum = 0;
+
+        int m = acts.size();
+        for(int i=0; i<m-1; i++){
+            if(acts.get(i).isStartTime)
+                curr++;
+            else
+                curr--;
+
+            if((i==m-2||(acts.get(i).time<acts.get(i+1).time)) && curr>sum)
+                sum = curr;
+        }
+
+        return sum;
+    }
+}
