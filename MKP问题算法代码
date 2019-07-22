@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//挑选物品序列集合
+//物品序列集合
 int array[64][6];
 //物品价值 
 int value[] = { 100, 600, 1200, 2400, 500, 2000 };
@@ -34,7 +34,7 @@ int result[10] = { 0,0,0,0,0,0,0,0,0,0 };
 int outArry[6] = { 0,0,0,0,0,0 };
 //价值最高最优解
 int MaxValue = 0;
-//q求两个数最大值
+//求两个数最大值
 int max(int a, int b);
 //初始化
 int* IntToBiary(int num);
